@@ -45,7 +45,7 @@ class AdminPanel {
 
                         return {
                             id: r._id || r.id,
-                            address: r.direccion || 'Sin direccion',
+                            address: r.dirección || 'Sin dirección',
                             coordinates: `${r.latitud}, ${r.longitud}`,
                             comment: r.comentario || 'Sin comentario',
                             type: 'basura', // Backend currently only handles this type implicitly
@@ -92,7 +92,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexiÃ³n");
+            alert("Error de conexión
         }
     }
 
@@ -110,12 +110,12 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexiÃ³n");
+            alert("Error de conexión
         }
     }
 
     async handleDelete(id) {
-        const confirmDelete = confirm('Eliminar este reporte? Esta acci��n no se puede deshacer.');
+        const confirmDelete = confirm('¿Eliminar este reporte? Esta acción no se puede deshacer.');
         if (!confirmDelete) return;
 
         try {
@@ -131,7 +131,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexi��n");
+            alert("Error de conexión
         }
     }
 
@@ -330,4 +330,10 @@ class AdminPanel {
         return page;
     }
 }
+
+
+
+
+
+
 

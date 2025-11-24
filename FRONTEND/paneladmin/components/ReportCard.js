@@ -153,6 +153,14 @@ class ReportCard {
                     ${Icons.xCircle('icon')}
                     <span>Este reporte ha sido denegado</span>
                 </div>
+                ${this.onDelete ? `
+                <div class="mt-3">
+                    <button class="btn btn-destructive btn-delete" style="width: 100%;">
+                        ${Icons.trash('icon-sm')}
+                        <span>Eliminar reporte</span>
+                    </button>
+                </div>
+                ` : ''}
             `;
         }
 
