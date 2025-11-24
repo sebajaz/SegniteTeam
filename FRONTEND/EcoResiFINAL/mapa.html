@@ -535,11 +535,19 @@
 
   <script src="config.js"></script>
   <script>
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${CONFIG.GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+    (async () => {
+      try {
+        const apiKey = await CONFIG.getGoogleMapsApiKey();
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+      } catch (err) {
+        console.error('No se pudo cargar Google Maps:', err);
+        alert('No se pudo cargar el mapa en este momento.');
+      }
+    })();
   </script>
 
 </body>
