@@ -92,7 +92,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexión
+            alert("Error de conexión");
         }
     }
 
@@ -110,7 +110,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexión
+            alert("Error de conexión");
         }
     }
 
@@ -131,7 +131,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexión
+            alert("Error de conexión");
         }
     }
 
@@ -330,6 +330,8 @@ class AdminPanel {
         return page;
     }
 }
+
+
 
 
 
