@@ -1,6 +1,39 @@
 const reporteService = require('../services/reporte.service');
 const { validationResult } = require('express-validator');
 
+/**
+ * Construye una URL p�blica para la imagen almacenada en /uploads.
+ * Se normaliza el path por si viene con rutas absolutas o backslashes.
+ */
+function buildPublicImageUrl(req, imagenUrl) {
+    if (!imagenUrl) return null;
+
+    // Normalizar separadores
+    const normalized = imagenUrl.replace(/\\/g, '/');
+
+    // Obtener la parte relativa a /uploads
+    let relativePath = normalized;
+    const uploadsIndex = normalized.indexOf('/uploads/');
+    const uploadsIndexNoSlash = normalized.indexOf('uploads/');
+
+    if (uploadsIndex !== -1) {
+        relativePath = normalized.slice(uploadsIndex);
+    } else if (uploadsIndexNoSlash !== -1) {
+        relativePath = '/' + normalized.slice(uploadsIndexNoSlash);
+    }
+
+    if (!relativePath.startsWith('/')) {
+        relativePath = '/' + relativePath;
+    }
+
+    // Detectar protocolo real si estamos detr�s de un proxy
+    const protoHeader = req.headers['x-forwarded-proto'];
+    const protocol = protoHeader ? protoHeader.split(',')[0] : req.protocol;
+    const host = req.get('host');
+
+    return `${protocol}://${host}${relativePath}`;
+}
+
 class ReporteController {
     /**
      * Crear nuevo reporte (PÚBLICO - sin autenticación)
@@ -19,7 +52,7 @@ class ReporteController {
             const { direccion, latitud, longitud, comentario } = req.body;
 
             // Imagen subida (si existe)
-            const imagenUrl = req.file ? req.file.path : null;
+            const imagenUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
             const reporte = await reporteService.crearReporte({
                 direccion,
@@ -32,7 +65,10 @@ class ReporteController {
             res.status(201).json({
                 success: true,
                 message: 'Reporte creado exitosamente',
-                data: reporte
+                data: {
+                    ...reporte.toJSON(),
+                    imagenUrlPublica: buildPublicImageUrl(req, imagenUrl)
+                }
             });
         } catch (error) {
             next(error);
@@ -64,9 +100,14 @@ class ReporteController {
 
             const resultado = await reporteService.obtenerReportes(filters, page, limit);
 
+            const reportesConImagen = resultado.reportes.map((r) => ({
+                ...r.toJSON(),
+                imagenUrlPublica: buildPublicImageUrl(req, r.imagenUrl)
+            }));
+
             res.status(200).json({
                 success: true,
-                data: resultado.reportes,
+                data: reportesConImagen,
                 pagination: resultado.pagination
             });
         } catch (error) {
@@ -84,7 +125,10 @@ class ReporteController {
 
             res.status(200).json({
                 success: true,
-                data: reporte
+                data: {
+                    ...reporte.toJSON(),
+                    imagenUrlPublica: buildPublicImageUrl(req, reporte.imagenUrl)
+                }
             });
         } catch (error) {
             next(error);

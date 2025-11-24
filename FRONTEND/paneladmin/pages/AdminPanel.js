@@ -1,4 +1,4 @@
-// Admin Panel Component
+﻿// Admin Panel Component
 class AdminPanel {
     constructor(onLogout) {
         this.onLogout = onLogout;
@@ -14,6 +14,10 @@ class AdminPanel {
         };
     }
 
+    getBackendBaseUrl() {
+        return CONFIG.API_URL.replace(/\/api\/v1$/, '');
+    }
+
     async fetchReports() {
         try {
             const response = await fetch(`${CONFIG.API_URL}/reportes`, {
@@ -24,15 +28,32 @@ class AdminPanel {
                 // Backend returns { success: true, data: [...], pagination: ... }
 
                 if (responseData.success && Array.isArray(responseData.data)) {
-                    this.reports = responseData.data.map(r => ({
-                        id: r._id || r.id,
-                        address: r.direccion || 'Sin dirección',
-                        coordinates: `${r.latitud}, ${r.longitud}`,
-                        comment: r.comentario || 'Sin comentario',
-                        type: 'basura', // Backend currently only handles this type implicitly
-                        status: this.mapStatusBackendToFrontend(r.estado),
-                        date: new Date(r.fechaCreacion).toLocaleString()
-                    }));
+                    const backendBase = this.getBackendBaseUrl();
+
+                    this.reports = responseData.data.map(r => {
+                        const rawImage = r.imagenUrlPublica || r.imagenUrl;
+                        let imageUrl = null;
+
+                        if (rawImage) {
+                            if (rawImage.startsWith('http')) {
+                                imageUrl = rawImage;
+                            } else {
+                                const normalized = rawImage.startsWith('/') ? rawImage : `/${rawImage}`;
+                                imageUrl = `${backendBase}${normalized}`;
+                            }
+                        }
+
+                        return {
+                            id: r._id || r.id,
+                            address: r.direccion || 'Sin direccion',
+                            coordinates: `${r.latitud}, ${r.longitud}`,
+                            comment: r.comentario || 'Sin comentario',
+                            type: 'basura', // Backend currently only handles this type implicitly
+                            status: this.mapStatusBackendToFrontend(r.estado),
+                            date: new Date(r.fechaCreacion).toLocaleString(),
+                            imageUrl
+                        };
+                    });
 
                     this.renderReports();
                     this.updateStats();
@@ -71,7 +92,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexión");
+            alert("Error de conexiÃ³n");
         }
     }
 
@@ -89,7 +110,7 @@ class AdminPanel {
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexión");
+            alert("Error de conexiÃ³n");
         }
     }
 
@@ -182,13 +203,13 @@ class AdminPanel {
                         <div class="flex items-center gap-3">
                             ${Icons.recycle('icon-lg')}
                             <div>
-                                <h1>Panel de Administración - EcoResi</h1>
-                                <p>Gestión de reportes ambientales</p>
+                                <h1>Panel de AdministraciÃ³n - EcoResi</h1>
+                                <p>GestiÃ³n de reportes ambientales</p>
                             </div>
                         </div>
                         <button class="btn btn-outline" id="logoutBtn">
                             ${Icons.logOut('icon-sm')}
-                            <span>Cerrar Sesión</span>
+                            <span>Cerrar SesiÃ³n</span>
                         </button>
                     </div>
                 </div>
@@ -287,3 +308,4 @@ class AdminPanel {
         return page;
     }
 }
+

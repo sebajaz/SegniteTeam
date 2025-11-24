@@ -62,6 +62,18 @@ class ReportCard {
                         <p class="text-gray-500 text-sm mb-1">Comentario:</p>
                         <p class="text-gray-800">${this.report.comment}</p>
                     </div>
+
+                    ${this.report.imageUrl ? `
+                    <div class="mb-3">
+                        <p class="text-gray-500 text-sm mb-1">Foto adjunta:</p>
+                        <div style="background: #fafafa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px;">
+                            <img src="${this.report.imageUrl}" alt="Foto del reporte" style="width: 100%; max-height: 260px; object-fit: cover; border-radius: 8px;">
+                            <div style="margin-top: 8px; text-align: right;">
+                                <a href="${this.report.imageUrl}" target="_blank" rel="noopener" class="text-sm" style="color: #2563eb;">Abrir imagen</a>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
                     
                     <div>
                         <p class="text-gray-500 text-sm mb-1">Coordenadas:</p>
