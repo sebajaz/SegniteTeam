@@ -114,6 +114,27 @@ class AdminPanel {
         }
     }
 
+    async handleDelete(id) {
+        const confirmDelete = confirm('Eliminar este reporte? Esta acci��n no se puede deshacer.');
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`${CONFIG.API_URL}/reportes/${id}`, {
+                method: 'DELETE',
+                headers: this.getAuthHeaders()
+            });
+
+            if (response.ok) {
+                await this.fetchReports();
+            } else {
+                alert("Error al eliminar el reporte");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error de conexi��n");
+        }
+    }
+
     setActiveTab(tab) {
         this.activeTab = tab;
 
@@ -152,12 +173,12 @@ class AdminPanel {
         const acceptedReports = this.reports.filter(r => r.status === 'accepted');
         const rejectedReports = this.reports.filter(r => r.status === 'rejected');
 
-        this.renderReportList('pending', pendingReports, true);
-        this.renderReportList('accepted', acceptedReports, false);
-        this.renderReportList('rejected', rejectedReports, false);
+        this.renderReportList('pending', pendingReports, { actions: true, allowDelete: false });
+        this.renderReportList('accepted', acceptedReports, { actions: false, allowDelete: true });
+        this.renderReportList('rejected', rejectedReports, { actions: false, allowDelete: true });
     }
 
-    renderReportList(status, reports, withActions) {
+    renderReportList(status, reports, { actions = false, allowDelete = false } = {}) {
         const container = document.getElementById(`${status}-reports`);
         container.innerHTML = '';
 
@@ -185,8 +206,9 @@ class AdminPanel {
             reports.forEach(report => {
                 const reportCard = new ReportCard(
                     report,
-                    withActions ? (id) => this.handleAccept(id) : null,
-                    withActions ? (id) => this.handleReject(id) : null
+                    actions ? (id) => this.handleAccept(id) : null,
+                    actions ? (id) => this.handleReject(id) : null,
+                    allowDelete ? (id) => this.handleDelete(id) : null
                 );
                 container.appendChild(reportCard.render());
             });

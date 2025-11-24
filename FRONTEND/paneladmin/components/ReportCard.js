@@ -1,9 +1,10 @@
 // Report Card Component
 class ReportCard {
-    constructor(report, onAccept = null, onReject = null) {
+    constructor(report, onAccept = null, onReject = null, onDelete = null) {
         this.report = report;
         this.onAccept = onAccept;
         this.onReject = onReject;
+        this.onDelete = onDelete;
     }
 
     render() {
@@ -94,6 +95,11 @@ class ReportCard {
             rejectBtn.addEventListener('click', () => this.onReject(this.report.id));
         }
 
+        const deleteBtn = card.querySelector('.btn-delete');
+        if (deleteBtn && this.onDelete) {
+            deleteBtn.addEventListener('click', () => this.onDelete(this.report.id));
+        }
+
         return card;
     }
 
@@ -111,6 +117,14 @@ class ReportCard {
                         <span>Denegar Reporte</span>
                     </button>
                 </div>
+                ${this.onDelete ? `
+                <div class="mt-3">
+                    <button class="btn btn-destructive btn-delete" style="width: 100%;">
+                        ${Icons.trash('icon-sm')}
+                        <span>Eliminar reporte</span>
+                    </button>
+                </div>
+                ` : ''}
             `;
         }
 
@@ -121,6 +135,14 @@ class ReportCard {
                     ${Icons.checkCircle('icon')}
                     <span>Este reporte ha sido aceptado y procesado</span>
                 </div>
+                ${this.onDelete ? `
+                <div class="mt-3">
+                    <button class="btn btn-destructive btn-delete" style="width: 100%;">
+                        ${Icons.trash('icon-sm')}
+                        <span>Eliminar reporte</span>
+                    </button>
+                </div>
+                ` : ''}
             `;
         }
 

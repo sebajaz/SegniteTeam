@@ -1,5 +1,7 @@
 const reporteService = require('../services/reporte.service');
 const { validationResult } = require('express-validator');
+const fs = require('fs');
+const path = require('path');
 
 /**
  * Construye una URL p�blica para la imagen almacenada en /uploads.
@@ -32,6 +34,22 @@ function buildPublicImageUrl(req, imagenUrl) {
     const host = req.get('host');
 
     return `${protocol}://${host}${relativePath}`;
+}
+
+/**
+ * Elimina el archivo local asociado (si existe)
+ */
+function deleteLocalImage(imagenUrl) {
+    if (!imagenUrl) return;
+
+    const normalized = imagenUrl.replace(/\\/g, '/');
+    const match = normalized.match(/uploads\/(.+)$/);
+    if (!match) return;
+
+    const filePath = path.join(process.cwd(), 'uploads', match[1]);
+    if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, () => { /* ignore errors */ });
+    }
 }
 
 class ReporteController {
@@ -165,6 +183,31 @@ class ReporteController {
                 success: true,
                 message: 'Reporte rechazado exitosamente',
                 data: reporte
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    /**
+     * Eliminar reporte (ADMIN)
+     * DELETE /api/v1/reportes/:id
+     */
+    async eliminarReporte(req, res, next) {
+        try {
+            const reporte = await reporteService.eliminarReporte(req.params.id);
+            if (!reporte) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Reporte no encontrado'
+                });
+            }
+
+            deleteLocalImage(reporte.imagenUrl);
+
+            res.status(200).json({
+                success: true,
+                message: 'Reporte eliminado exitosamente'
             });
         } catch (error) {
             next(error);

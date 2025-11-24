@@ -160,6 +160,23 @@ class ReporteRepository {
             throw error;
         }
     }
+
+    /**
+     * Eliminar un reporte por ID
+     */
+    async deleteById(id) {
+        try {
+            const reporte = await Reporte.findByPk(id);
+            if (!reporte) {
+                return null;
+            }
+
+            await reporte.destroy();
+            return reporte;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 module.exports = new ReporteRepository();

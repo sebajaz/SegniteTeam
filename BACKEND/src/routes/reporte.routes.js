@@ -103,4 +103,13 @@ router.put('/:id/rechazar',
     reporteController.rechazarReporte
 );
 
+/**
+ * DELETE /api/v1/reportes/:id
+ * Eliminar reporte
+ */
+router.delete('/:id',
+    authMiddleware.verificarToken,
+    reporteController.eliminarReporte
+);
+
 module.exports = router;

@@ -82,6 +82,25 @@ class ReporteService {
     }
 
     /**
+     * Eliminar un reporte (solo admin)
+     */
+    async eliminarReporte(id) {
+        try {
+            const reporte = await reporteRepository.deleteById(id);
+            if (!reporte) {
+                return null;
+            }
+
+            // Recalcular zonas afectadas tras eliminar
+            await this.recalcularZonasAfectadas();
+
+            return reporte;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    /**
      * Recalcular zonas afectadas para todos los reportes
      */
     async recalcularZonasAfectadas() {
