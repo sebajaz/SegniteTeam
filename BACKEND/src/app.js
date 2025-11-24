@@ -15,7 +15,11 @@ const configRoutes = require('./routes/config.routes');
 const app = express();
 
 // Middlewares de seguridad y utilidad
-app.use(helmet()); // Seguridad HTTP headers
+// Permitimos cargar recursos est�ticos (im�genes) desde otros or�genes para el panel admin.
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    crossOriginEmbedderPolicy: false
+})); // Seguridad HTTP headers
 app.use(cors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
     credentials: true
