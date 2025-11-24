@@ -1,0 +1,176 @@
+/* Report Card Specific Styles */
+.report-card {
+    margin-bottom: var(--spacing-4);
+}
+
+.icon-container {
+    padding: var(--spacing-2);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-orange-light {
+    background-color: var(--orange-100);
+}
+
+.bg-green-light {
+    background-color: var(--green-100);
+}
+
+.text-orange {
+    color: var(--orange-600);
+}
+
+.text-green {
+    color: var(--green-600);
+}
+
+.text-gray-500 {
+    color: var(--gray-500);
+}
+
+.text-gray-600 {
+    color: var(--gray-600);
+}
+
+.text-gray-800 {
+    color: var(--gray-800);
+}
+
+.report-details {
+    margin-top: var(--spacing-3);
+}
+
+.coordinates-code {
+    font-size: var(--font-size-sm);
+    background-color: var(--gray-100);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-family: 'Courier New', monospace;
+}
+
+.status-message {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3);
+    border-radius: var(--radius-lg);
+}
+
+.status-accepted {
+    color: var(--green-600);
+    background-color: var(--green-50);
+}
+
+.status-rejected {
+    color: var(--red-600);
+    background-color: var(--red-50);
+}
+
+/* Login Page Styles */
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--emerald-500), var(--teal-500), #16a34a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.login-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    background-color: var(--white);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--spacing-4);
+}
+
+.login-logo .icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--emerald-600);
+}
+
+.login-title {
+    color: var(--white);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-2);
+}
+
+.login-subtitle {
+    color: var(--emerald-100);
+}
+
+.login-card {
+    box-shadow: var(--shadow-2xl);
+}
+
+.login-footer {
+    text-align: center;
+    color: var(--emerald-50);
+    margin-top: var(--spacing-6);
+}
+
+/* Admin Panel Styles */
+.admin-header {
+    background-color: var(--emerald-800);
+    color: var(--white);
+    box-shadow: var(--shadow-lg);
+}
+
+.admin-header .container {
+    padding-top: var(--spacing-6);
+    padding-bottom: var(--spacing-6);
+}
+
+.admin-header h1 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-1);
+}
+
+.admin-header p {
+    color: var(--emerald-100);
+}
+
+.admin-body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--emerald-50), var(--teal-50));
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+}
+
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.reports-section {
+    margin-top: var(--spacing-8);
+}
+
+.reports-list {
+    margin-top: var(--spacing-6);
+}
+
+.reports-list>*+* {
+    margin-top: var(--spacing-4);
+}

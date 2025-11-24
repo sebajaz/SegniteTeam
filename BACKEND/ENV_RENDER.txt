@@ -1,0 +1,57 @@
+# Variables de Entorno para Render (Copiar y Pegar)
+
+## Variables Obligatorias
+
+```
+NODE_ENV=production
+JWT_SECRET=ecoresi_produccion_secret_key_2024_cambiar_por_algo_mas_seguro
+JWT_EXPIRES_IN=7d
+ALLOWED_ORIGINS=https://tu-frontend.onrender.com
+API_PREFIX=/api/v1
+```
+
+## DATABASE_URL
+
+Render lo configurará automáticamente cuando vincules la base de datos PostgreSQL.
+
+Si necesitas configurarlo manualmente:
+```
+DATABASE_URL=postgresql://root:ISYpnxK2pf2W4LAMMX3x5O5Feeag3O7n@dpg-d4fbg849c44c73bltcpg-a.oregon-postgres.render.com/ecoresi
+```
+
+## Variables Opcionales (Cloudinary)
+
+Solo si vas a usar Cloudinary para imágenes:
+```
+CLOUDINARY_CLOUD_NAME=tu_cloud_name
+CLOUDINARY_API_KEY=tu_api_key
+CLOUDINARY_API_SECRET=tu_api_secret
+```
+
+---
+
+## Configuración en Render
+
+1. Ve a tu Web Service en Render
+2. Click en "Environment"
+3. Agrega cada variable una por una:
+   - Key: `NODE_ENV` → Value: `production`
+   - Key: `JWT_SECRET` → Value: `ecoresi_produccion_secret_key_2024_cambiar_por_algo_mas_seguro`
+   - Key: `JWT_EXPIRES_IN` → Value: `7d`
+   - Key: `ALLOWED_ORIGINS` → Value: `https://tu-frontend.onrender.com`
+   - Key: `API_PREFIX` → Value: `/api/v1`
+
+4. Para DATABASE_URL:
+   - Opción A: Render lo detecta automáticamente si vinculas la BD
+   - Opción B: Agrégalo manualmente con el valor de arriba
+
+---
+
+## IMPORTANTE: Actualizar ALLOWED_ORIGINS
+
+Después de deployar el frontend, actualiza `ALLOWED_ORIGINS` con la URL real:
+```
+ALLOWED_ORIGINS=https://tu-frontend-real.onrender.com,https://ecoresi.com
+```
+
+Puedes agregar múltiples orígenes separados por comas.

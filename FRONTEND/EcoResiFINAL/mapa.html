@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa Interactivo | EcoResi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="general.css">
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="logo">
+      <a href="index.html"><img src="ecoresilogo.png" alt="EcoResi Logo"></a>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-item">INICIO</a></li>
+
+        <li><a href="index.html#rrr" class="nav-item">RRR</a></li>
+
+        <li><a href="index.html#tips" class="nav-item">TIPS</a></li>
+
+        <div class="dropdown">
+          <button class="dropbtn" id="btnHerramientas">
+            SERVICIOS <span class="arrow-icon">▼</span>
+          </button>
+          <div class="dropdown-content" id="menuHerramientas">
+            <a href="mapa.html">MAPA INTERACTIVO</a>
+            <a href="#" id="btnHorariosNav">HORARIOS DE RECOLECCION</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn" id="btnNosotros">
+            NOSOTROS <span class="arrow-icon">▼</span>
+          </button>
+          <div class="dropdown-content" id="menuNosotros">
+            <a href="informacion.html">¿QUÉ ES ECORESI?</a>
+            <a href="equipo.html">QUIÉNES SOMOS</a>
+          </div>
+        </div>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="page-hero">
+    <div class="hero-overlay"></div>
+    <div class="page-hero-content">
+      <h1>Mapa de <span class="resaltado">Reportes</span></h1>
+      <p>Visualizá zonas críticas, encontrá puntos de reciclaje y colaborá en tiempo real.</p>
+    </div>
+  </section>
+
+  <section class="map-dashboard-section">
+    <div class="map-container-box">
+      <div id="map"></div>
+    </div>
+
+    <div class="map-actions">
+      <a href="index.html" class="btn-volver">← Volver al Inicio</a>
+    </div>
+  </section>
+
+  <section class="map-purpose-section">
+    <div class="purpose-container">
+      <h2>¿Por qué es importante este <span class="brand-green">Mapa</span>?</h2>
+      <p class="purpose-intro">
+        No es solo un mapa, es una herramienta de <strong>inteligencia colectiva</strong>.
+        Buscamos empoderar a los vecinos de Resistencia para visibilizar lo que muchas veces pasa desapercibido.
+      </p>
+
+      <div class="purpose-grid">
+
+        <div class="purpose-card">
+          <div class="p-icon">📢</div>
+          <h3>Visibilizar</h3>
+          <p>Al reportar un basural, no solo marcas un punto en el mapa, estás alertando a la comunidad y generando un
+            registro real del problema.</p>
+        </div>
+
+        <div class="purpose-card">
+          <div class="p-icon">♻️</div>
+          <h3>Conectar</h3>
+          <p>Facilitamos la ubicación de <strong>Puntos Verdes</strong> y Centros de Reciclaje para que sepas
+            exactamente dónde llevar tus materiales.</p>
+        </div>
+
+        <div class="purpose-card">
+          <div class="p-icon">🧹</div>
+          <h3>Transformar</h3>
+          <p>La información es el primer paso para la acción. Identificar las "Zonas Rojas" nos ayuda a priorizar
+            esfuerzos de limpieza.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section contact">
+        <h3>Contacto</h3>
+        <p><strong>Email:</strong> contacto@ecoresi.com</p>
+        <p><strong>Teléfono:</strong> +54 362 123 4567</p>
+        <p><strong>Dirección:</strong> Resistencia, Chaco, Argentina</p>
+      </div>
+      <div class="footer-section social">
+        <h3>Redes Sociales</h3>
+        <div class="social-icons">
+          <a href="#" target="_blank">Facebook</a>
+          <a href="#" target="_blank">Instagram</a>
+          <a href="#" target="_blank">Twitter</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <a href="informacion.html" class="copyright-link">EcoResi</a> - Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    let map;
+    let markers = [];
+    let dangerZones = [];
+    let recycleCenters = [];
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -27.4519, lng: -58.9867 }, // Resistencia
+        zoom: 13,
+        disableDefaultUI: true, // 🔹 IMPORTANTE: Quita los controles feos por defecto de Google
+        styles: [
+          { elementType: "geometry", stylers: [{ color: "#0f2f28" }] },
+          { elementType: "labels.text.fill", stylers: [{ color: "#ffffff" }] },
+          { elementType: "labels.text.stroke", stylers: [{ color: "#0f2f28" }] },
+          { featureType: "road", elementType: "geometry", stylers: [{ color: "#1a4a3e" }] },
+          { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e2a25" }] },
+        ],
+      });
+
+      // --- 1. CREAR EL DOCK (BARRA FLOTANTE) ---
+      const dockContainer = document.createElement("div");
+      dockContainer.className = "map-dock-container";
+
+      // Botón Filtros
+      const btnFiltros = document.createElement("button");
+      btnFiltros.innerHTML = "⚙️ Filtros";
+      btnFiltros.className = "dock-btn";
+
+      // Botón CENTRAL (Reportar) - Más grande y llamativo
+      const btnReportar = document.createElement("button");
+      btnReportar.innerHTML = "<span>📍</span> REPORTAR";
+      btnReportar.className = "dock-btn-primary";
+
+      // Botón Extra (Info o lo que quieras)
+      const btnExtra = document.createElement("button");
+      btnExtra.innerHTML = "ℹ️ Ayuda";
+      btnExtra.className = "dock-btn";
+
+      // Agregamos los botones al dock
+      dockContainer.appendChild(btnFiltros);
+      dockContainer.appendChild(btnReportar);
+      dockContainer.appendChild(btnExtra);
+
+      // Empujamos el dock a la posición INFERIOR CENTRAL
+      map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(dockContainer);
+
+
+      // --- 2. CREAR EL POPUP DE FILTROS ---
+      const filterPopup = document.createElement("div");
+      filterPopup.className = "filter-popup";
+
+      const optZonas = document.createElement("button");
+      optZonas.className = "filter-option";
+      optZonas.innerHTML = "🔴 Ver Zonas Afectadas";
+
+      const optReciclaje = document.createElement("button");
+      optReciclaje.className = "filter-option";
+      optReciclaje.innerHTML = "♻️ Ver Centros de Reciclaje";
+
+      filterPopup.appendChild(optZonas);
+      filterPopup.appendChild(optReciclaje);
+
+      // CAMBIO CLAVE: Lo agregamos DENTRO de la barra (dockContainer)
+      // Así el CSS 'left: 0' funciona respecto a la barra y no a la pantalla
+      dockContainer.appendChild(filterPopup);
+
+      // (Borra el código viejo que usaba 'popupContainer' y 'map.controls.push...')
+
+
+      // --- 3. EVENTOS ---
+
+      // Mostrar/Ocultar Filtros
+      btnFiltros.addEventListener("click", () => {
+        const isHidden = filterPopup.style.display === "none" || filterPopup.style.display === "";
+        filterPopup.style.display = isHidden ? "flex" : "none";
+      });
+
+      // Acciones de filtros
+      optZonas.addEventListener("click", () => {
+        toggleDangerZones();
+        filterPopup.style.display = "none";
+      });
+
+      optReciclaje.addEventListener("click", () => {
+        toggleRecycleCenters();
+        filterPopup.style.display = "none";
+      });
+
+      // Acción Reportar
+      btnReportar.addEventListener("click", () => {
+        console.log("👁️ Botón Reportar clickeado");
+        openReportModal();
+      });
+
+      // Acción Extra (Ejemplo: mostrar la leyenda)
+      btnExtra.addEventListener("click", () => {
+        alert("Hacé clic en el mapa o usá el botón verde para reportar basura.");
+      });
+    }
+
+    function styleDropdownButton(btn, hoverColor) {
+      btn.style.display = "block";
+      btn.style.width = "100%";
+      btn.style.background = "none";
+      btn.style.color = "white";
+      btn.style.border = "none";
+      btn.style.padding = "10px 20px";
+      btn.style.textAlign = "left";
+      btn.style.cursor = "pointer";
+      btn.onmouseover = () => (btn.style.background = hoverColor);
+      btn.onmouseout = () => (btn.style.background = "none");
+    }
+
+    // --- MODAL DE REPORTE MODERNO ---
+    function openReportModal() {
+      console.log("🔴 openReportModal() fue llamada");
+      const modal = document.createElement("div");
+      modal.className = "modal-overlay";
+      modal.style.display = "flex";
+
+      modal.innerHTML = `
+    <div class="modern-modal">
+      <h2>📍 Nuevo Reporte</h2>
+      
+      <label class="input-label">
+        Ubicación
+        <span class="info-icon">?
+          <span class="tooltip-text">
+            Podes escribir una calle (ej: Av. 9 de Julio 100) o coordenadas.<br><br>
+            Para obtener coordenadas: En Google Maps, mantené presionado un lugar y copiá los números (ej: -27.45, -58.98).
+          </span>
+        </span>
+      </label>
+      <input id="address" type="text" class="modern-input" placeholder="Dirección o Coordenadas GPS...">
+      
+      <label class="input-label">Detalles del problema</label>
+      <textarea id="comment" rows="3" class="modern-input" placeholder="Ej: Basura acumulada en la esquina..."></textarea>
+      
+      <label class="input-label">Evidencia (Foto)</label>
+      <input id="image" type="file" accept="image/*" class="modern-input" style="padding: 8px;">
+      
+      <div class="modal-actions">
+        <button id="useLocation" class="btn-location">📍 Usar mi ubicación actual</button>
+        
+        <div class="btn-row">
+          <button id="sendReport" class="btn-submit">Enviar Reporte</button>
+          <button id="cancelReport" class="btn-cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+      document.body.appendChild(modal);
+
+      const addressInput = modal.querySelector("#address");
+
+      if (window.currentAutocomplete) {
+        google.maps.event.clearInstanceListeners(window.currentAutocomplete);
+        window.currentAutocomplete = null;
+      }
+
+      const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+        types: ["address"],
+        componentRestrictions: { country: "ar" },
+        fields: ["geometry", "formatted_address", "name"],
+      });
+      window.currentAutocomplete = autocomplete;
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+          return;
+        }
+        addressInput.dataset.lat = place.geometry.location.lat();
+        addressInput.dataset.lng = place.geometry.location.lng();
+        addressInput.value = place.formatted_address;
+
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);
+      });
+
+      const geocoder = new google.maps.Geocoder();
+
+      modal.querySelector("#cancelReport").addEventListener("click", () => modal.remove());
+
+      modal.querySelector("#useLocation").addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          alert("Geolocalización no soportada.");
+          return;
+        }
+        const btn = modal.querySelector("#useLocation");
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "⏳ Obteniendo...";
+
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+
+          addressInput.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+          delete addressInput.dataset.lat;
+          delete addressInput.dataset.lng;
+
+          const myPos = { lat, lng };
+          addMarker(myPos, "Mi ubicación actual");
+          map.setCenter(myPos);
+          map.setZoom(16);
+
+          btn.innerHTML = "✅ ¡Ubicación detectada!";
+          setTimeout(() => btn.innerHTML = originalText, 2000);
+
+        }, () => {
+          alert("Error al obtener ubicación. Verifica los permisos.");
+          btn.innerHTML = originalText;
+        });
+      });
+
+      // Botón Enviar
+      modal.querySelector("#sendReport").addEventListener("click", async () => {
+        const btnEnviar = modal.querySelector("#sendReport");
+        const originalText = btnEnviar.innerText;
+
+        const address = addressInput.value.trim();
+        const comment = modal.querySelector("#comment").value.trim();
+        const imageFile = modal.querySelector("#image").files[0];
+
+        if (!address) {
+          alert("Por favor, ingresa una dirección o coordenadas.");
+          return;
+        }
+
+        if (!comment) {
+          alert("Por favor, agrega un detalle del problema.");
+          return;
+        }
+
+        const enviarAlBackend = async (lat, lng) => {
+          try {
+            btnEnviar.disabled = true;
+            btnEnviar.innerText = "Enviando...";
+
+            const formData = new FormData();
+            formData.append('latitud', lat);
+            formData.append('longitud', lng);
+            formData.append('comentario', comment);
+            formData.append('direccion', address);
+            if (imageFile) {
+              formData.append('imagen', imageFile);
+            }
+
+            const response = await fetch(`${CONFIG.API_URL}/reportes`, {
+              method: 'POST',
+              body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              alert("¡Reporte enviado con éxito!");
+              let imageURL = imageFile ? URL.createObjectURL(imageFile) : "";
+              addMarker({ lat, lng }, comment, imageURL);
+              modal.remove();
+            } else {
+              throw new Error(data.message || "Error al enviar reporte");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Hubo un problema al enviar el reporte: " + error.message);
+          } finally {
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = originalText;
+          }
+        };
+
+        if (addressInput.dataset.lat) {
+          await enviarAlBackend(parseFloat(addressInput.dataset.lat), parseFloat(addressInput.dataset.lng));
+          return;
+        }
+
+        const coords = address.split(',').map(n => parseFloat(n.trim()));
+        if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+          await enviarAlBackend(coords[0], coords[1]);
+          return;
+        }
+
+        geocoder.geocode({ address }, async (results, status) => {
+          if (status === "OK" && results[0]) {
+            const lat = results[0].geometry.location.lat();
+            const lng = results[0].geometry.location.lng();
+            await enviarAlBackend(lat, lng);
+          } else {
+            alert("No pudimos encontrar esa dirección. Intenta usar el mapa o coordenadas.");
+          }
+        });
+      });
+    }
+
+    function addMarker(location, comment, imageURL) {
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: { url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png" }
+      });
+      let infoContent = `<div style="color:black; max-width:200px;"><b>Reporte:</b><br>${comment || "Sin comentario"}`;
+      if (imageURL) infoContent += `<br><img src="${imageURL}" style="width:100%; margin-top:5px; border-radius:5px;">`;
+      infoContent += `</div>`;
+      const infoWindow = new google.maps.InfoWindow({ content: infoContent });
+      marker.addListener("click", () => infoWindow.open(map, marker));
+      markers.push(marker);
+    }
+
+    function toggleDangerZones() {
+      if (dangerZones.length > 0) {
+        dangerZones.forEach((circle) => circle.setMap(null));
+        dangerZones = [];
+        return;
+      }
+
+      const zonesData = [
+        { lat: -27.4800, lng: -58.9950, color: "#e74c3c", radius: 500, type: "Basural a Cielo Abierto" },
+        { lat: -27.4250, lng: -59.0100, color: "#e74c3c", radius: 450, type: "Acumulación Crónica" },
+        { lat: -27.4600, lng: -58.9500, color: "#e74c3c", radius: 400, type: "Zona Crítica Canal" },
+        { lat: -27.4450, lng: -58.9850, color: "#f39c12", radius: 250, type: "Micro-basural Recurrente" },
+        { lat: -27.4550, lng: -59.0050, color: "#f39c12", radius: 300, type: "Foco Infeccioso" },
+        { lat: -27.4350, lng: -58.9700, color: "#f39c12", radius: 200, type: "Esquina Afectada" },
+        { lat: -27.4680, lng: -58.9920, color: "#f39c12", radius: 280, type: "Riesgo Hídrico" },
+        { lat: -27.4520, lng: -58.9750, color: "#f1c40f", radius: 150, type: "Basura Dispersa" },
+        { lat: -27.4480, lng: -58.9600, color: "#f1c40f", radius: 180, type: "Punto de Arrojo Ilegal" }
+      ];
+
+      zonesData.forEach((zone) => {
+        const circle = new google.maps.Circle({
+          strokeColor: zone.color,
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: zone.color,
+          fillOpacity: 0.35,
+          map: map,
+          center: { lat: zone.lat, lng: zone.lng },
+          radius: zone.radius,
+          clickable: true
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<div style="color:#333; text-align:center;">
+                    <b style="color:${zone.color}">⚠️ ALERTA AMBIENTAL</b><br>
+                    ${zone.type}
+                  </div>`
+        });
+
+        google.maps.event.addListener(circle, 'click', (ev) => {
+          infoWindow.setPosition(ev.latLng);
+          infoWindow.open(map);
+        });
+
+        dangerZones.push(circle);
+      });
+    }
+
+    function toggleRecycleCenters() {
+      if (recycleCenters.length > 0) {
+        recycleCenters.forEach((m) => m.setMap(null));
+        recycleCenters = [];
+        return;
+      }
+
+      const centers = [
+        { lat: -27.4345, lng: -58.9665, name: "Punto Verde Shopping Sarmiento", type: "♻️ Plástico y Cartón" },
+        { lat: -27.4432, lng: -58.9820, name: "Estación de Reciclaje Carrefour", type: "🔋 Pilas y Baterías" },
+        { lat: -27.4480, lng: -58.9750, name: "Punto Laguna Argüello", type: "🍾 Vidrio y Aluminio" },
+        { lat: -27.4555, lng: -58.9882, name: "Tribunales (López y Planes 215)", type: "📄 Papel y Documentos" },
+        { lat: -27.4305, lng: -58.9901, name: "CC Villa Río Negro", type: "🛢️ Aceite Vegetal Usado" },
+        { lat: -27.4650, lng: -58.9850, name: "Punto Limpio Sur (Edison)", type: "📦 Voluminosos" },
+        { lat: -27.4519, lng: -58.9867, name: "Plaza 25 de Mayo (Punto Móvil)", type: "📱 Electrónicos (RAEE)" }
+      ];
+
+      const recycleIcon = {
+        url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='40' height='40'%3E%3Cpath fill='%2300c853' d='M432 96h-46.4l-26.2-46.7c-7.5-13.3-21.3-21.3-36.6-21.3H189.2c-15.3 0-29.1 8-36.6 21.3L126.4 96H80c-17.7 0-32 14.3-32 32s14.3 32 32 32h24.6l36.6 273.2c5 37.2 36.9 65.8 74.5 65.8h180.7c37.6 0 69.5-28.6 74.5-65.8L469.4 160H494c17.7 0 32-14.3 32-32s-14.3-32-32-32zm-176 96l-32 176c-1.6 8.8-9.4 16-19.4 16s-17.8-7.2-19.4-16l-32-176c-1.9-10.5 4.3-19.9 13.8-21.1 9.6-1.2 19.1 5 21.1 15.5l25.4 139.8 25.4-139.8c1.9-10.5 11.5-16.7 21.1-15.5 9.5 1.2 15.7 10.6 13.8 21.1z'/%3E%3C/svg%3E", scaledSize: new google.maps.Size(42, 42),
+        anchor: new google.maps.Point(21, 42)
+      };
+
+      centers.forEach((c) => {
+        const marker = new google.maps.Marker({
+          position: { lat: c.lat, lng: c.lng },
+          map: map,
+          title: c.name,
+          icon: recycleIcon,
+          animation: google.maps.Animation.DROP
+        });
+
+        const infoContent = `
+        <div style="color: #333; padding: 5px; text-align: center;">
+          <h3 style="margin: 0 0 5px 0; color: #27ae60; font-size: 16px;">${c.name}</h3>
+          <p style="margin: 0; font-weight: bold;">${c.type}</p>
+          <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">📍 Punto Oficial</p>
+        </div>
+      `;
+
+        const infoWindow = new google.maps.InfoWindow({ content: infoContent });
+
+        marker.addListener("click", () => {
+          infoWindow.open(map, marker);
+        });
+
+        recycleCenters.push(marker);
+      });
+    }
+  </script>
+
+  <script src="script.js"></script>
+
+  <script src="config.js"></script>
+  <script>
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${CONFIG.GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  </script>
+
+</body>
+
+</html>

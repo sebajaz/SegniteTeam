@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoResi - Resistencia Limpia</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="general.css">
+  
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.script.js"></script>
+</head>
+
+<body>
+<header class="navbar">
+  <div class="logo">
+    <a href="index.html">
+      <img src="ecoresilogo.png" alt="EcoResi Logo">
+    </a>
+  </div>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-item">INICIO</a></li>
+
+      <li><a href="index.html#rrr" class="nav-item">RRR</a></li>
+
+      <li><a href="index.html#tips" class="nav-item">TIPS</a></li>
+
+      <div class="dropdown">
+        <button class="dropbtn" id="btnHerramientas">
+          SERVICIOS <span class="arrow-icon">▼</span>
+        </button>
+        <div class="dropdown-content" id="menuHerramientas">
+          <a href="mapa.html">MAPA INTERACTIVO</a>
+          <a href="#" id="btnHorariosNav">HORARIOS DE RECOLECCION</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropbtn" id="btnNosotros">
+          NOSOTROS <span class="arrow-icon">▼</span>
+        </button>
+        <div class="dropdown-content" id="menuNosotros">
+          <a href="informacion.html">¿QUÉ ES ECORESI?</a>
+          <a href="equipo.html">QUIÉNES SOMOS</a>
+        </div>
+      </div>
+    </ul>
+  </nav>
+</header>
+
+<section id="inicio" class="hero-modern">
+  <div class="hero-gradient-overlay"></div>
+
+  <div class="hero-content">
+    <span class="hero-badge">🌱 BIENVENIDOS A ECORESI</span>
+    
+    <h1 class="animate-up delay-1">
+      NO DEJES QUE LA BASURA<br>
+      <span class="text-highlight">DEFINA RESISTENCIA</span>
+    </h1>
+    
+    <p class="animate-up delay-2">
+      Cada residuo cuenta. Transformemos nuestra ciudad con tecnología, conciencia y acción colectiva.
+    </p>
+
+    <div class="hero-buttons animate-up delay-3">
+      <a href="#rrr" class="btn-hero-primary">Comenzar a Reciclar</a>
+      <a href="mapa.html" class="btn-hero-outline">Ver el Mapa</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator animate-up delay-4">
+    <div class="mouse">
+      <div class="wheel"></div>
+    </div>
+    <span>Desliza</span>
+  </div>
+</section>
+
+<section class="intro-contexto">
+  <div class="intro-content">
+    <h2>¿Qué es <span class="brand-green">EcoResi</span>?</h2>
+    <p>
+      Somos una plataforma digital comprometida con el medio ambiente en Resistencia. 
+      Aquí encontrarás servicios interactivos como <strong>mapas de residuos</strong>, 
+      <strong>horarios de recolección</strong> y guías de <strong>reciclaje (RRR)</strong>. 
+      Nuestro objetivo es simple: darte la información que necesitas para transformar la ciudad.
+    </p>
+    <div class="intro-features">
+  <div class="feature-item">
+    <span class="feature-icon">🗺️</span>
+    <span>Mapeo</span>
+  </div>
+  <div class="feature-item">
+    <span class="feature-icon">🚛</span>
+    <span>Recolección</span>
+  </div>
+  <div class="feature-item">
+    <span class="feature-icon">♻️</span>
+    <span>Reciclaje</span>
+  </div>
+</div>
+    <a href="informacion.html" class="btn-glow">Conocer nuestra Misión</a>
+  </div>
+</section>
+
+
+
+  <section class="tools-section">
+  <div class="tools-container">
+    <div class="section-header">
+      <h2>servicios <span class="brand-green">EcoResi</span></h2>
+      <p>Tecnología cívica diseñada para facilitarte la vida y cuidar la ciudad.</p>
+    </div>
+
+    <div class="tools-grid">
+      
+      <a href="mapa.html" class="tool-card">
+        <div class="card-glow"></div>
+        <div class="tool-icon">
+          <img src="imagenes/MAPApromoprime.png" alt="Mapa de Residuos">
+        </div>
+        <div class="tool-content">
+          <h3>Mapa Interactivo</h3>
+          <p>Localizá basurales, puntos verdes y reportá incidencias en tiempo real.</p>
+          <span class="btn-text">Abrir Mapa &rarr;</span>
+        </div>
+      </a>
+
+      <div id="openHorariosCard" class="tool-card clickable">
+        <div class="card-glow"></div>
+        <div class="tool-icon">
+          <img src="imagenes/RECOLECTORESpromoprime.png" alt="Horarios Recolección">
+        </div>
+        <div class="tool-content">
+          <h3>Horarios de Recolectores</h3>
+          <p>Consultá el cronograma exacto de recolección en tu barrio o calle.</p>
+          <span class="btn-text">Ver Horarios &rarr;</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <section id="rrr" class="section-rrr">
+  <div class="rrr-overlay"></div>
+
+  <div class="rrr-content-wrapper">
+    <div class="section-header">
+      <h2>La Regla de las <span class="brand-green">3R</span></h2>
+      <p>Pequeñas acciones que generan un gran impacto en Resistencia.</p>
+    </div>
+
+    <div class="rrr-container">
+      
+      <div class="rrr-card">
+        <div class="card-icon">
+          <img src="reduce_fondo_transparente.png" alt="Reduce">
+        </div>
+        <h3>Reduce</h3>
+        <p>
+          La mejor basura es la que no se genera. Planificá tus compras, evitá plásticos de un solo uso y elegí productos con menos envoltorios.
+        </p>
+      </div>
+
+      <div class="rrr-card">
+        <div class="card-icon">
+          <img src="reutiliza_fondo_transparente.png" alt="Reutiliza">
+        </div>
+        <h3>Reutiliza</h3>
+        <p>
+          Dale una segunda vida a los objetos. Usá frascos de vidrio, doná ropa o repará muebles antes de tirarlos. ¡La creatividad es clave!
+        </p>
+      </div>
+
+      <div class="rrr-card">
+        <div class="card-icon">
+          <img src="recicla_fondo_transparente.png" alt="Recicla">
+        </div>
+        <h3>Recicla</h3>
+        <p>
+          Separá tus residuos (plástico, vidrio, papel, cartón) limpios y secos. Llévalos a los Puntos Verdes o entrégalos al recolector diferenciado.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <section id="tips" class="tips-section">
+  <div class="tips-container">
+    
+    <div class="section-header">
+      <h2>Tu aporte hace el <span class="brand-green">Cambio</span></h2>
+      <p>Pequeños hábitos diarios que logran un gran impacto. Dale play y aprendé cómo empezar.</p>
+    </div>
+
+    <div class="tips-grid">
+
+      <div class="tip-card">
+        <div class="video-wrapper">
+          <video class="tip-video" muted playsinline preload="metadata">
+            <source src="videosTIPS/SEPARARESIDUOS.mp4" type="video/mp4">
+          </video>
+          <button class="play-btn">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <div class="tip-info">
+          <h3>Separá tus residuos</h3>
+          <p>Clasifica plástico, vidrio y papel para facilitar su reciclaje.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="video-wrapper">
+          <video class="tip-video" muted playsinline preload="metadata">
+            <source src="videosTIPS/SEPARARESIDUOS.mp4" type="video/mp4">
+          </video>
+          <button class="play-btn"><span class="play-icon">▶</span></button>
+        </div>
+        <div class="tip-info">
+          <h3>Reducí plásticos</h3>
+          <p>Evita los envases de un solo uso y lleva tu propia bolsa.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="video-wrapper">
+          <video class="tip-video" muted playsinline preload="metadata">
+            <source src="videosTIPS/REUTILIZA.mp4" type="video/mp4">
+          </video>
+          <button class="play-btn"><span class="play-icon">▶</span></button>
+        </div>
+        <div class="tip-info">
+          <h3>Reutiliza antes de tirar</h3>
+          <p>Dale una segunda vida a frascos y cajas antes de desecharlos.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="video-wrapper">
+          <video class="tip-video" muted playsinline preload="metadata">
+            <source src="videosTIPS/ACOPIOS.mp4" type="video/mp4">
+          </video>
+          <button class="play-btn"><span class="play-icon">▶</span></button>
+        </div>
+        <div class="tip-info">
+          <h3>Centros de Acopio</h3>
+          <p>Llevá tus reciclables limpios a los puntos verdes de la ciudad.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="video-wrapper">
+          <video class="tip-video" muted playsinline preload="metadata">
+            <source src="videosTIPS/FAMILIAS.mp4" type="video/mp4">
+          </video>
+          <button class="play-btn"><span class="play-icon">▶</span></button>
+        </div>
+        <div class="tip-info">
+          <h3>Educá a tu entorno</h3>
+          <p>Involucrá a tu familia y vecinos en el cuidado del barrio.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="video-wrapper">
+          <video class="tip-video" muted playsinline preload="metadata">
+            <source src="videosTIPS/CAMPAÑAS.mp4" type="video/mp4">
+          </video>
+          <button class="play-btn"><span class="play-icon">▶</span></button>
+        </div>
+        <div class="tip-info">
+          <h3>Participá activamente</h3>
+          <p>Sumate a campañas de limpieza y concientización local.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <section id="impacto" class="impact-section">
+  <div class="impact-bg-overlay"></div>
+
+  <div class="impact-container">
+    
+    <div class="impact-header">
+      <div class="live-badge">
+        <span class="pulse-dot"></span> EN TIEMPO REAL
+      </div>
+      <h2>Monitor de <span class="text-gradient">Impacto Global</span></h2>
+      <p>Mientras lees esto, el planeta sigue cambiando. Estas son las estimaciones acumuladas <strong>solo en lo que va de este año</strong>.</p>
+    </div>
+
+    <div class="impact-grid">
+      
+      <div class="stat-card trash-card">
+        <div class="icon-wrapper">🗑️</div>
+        <div class="stat-content">
+          <div class="number-display" id="basura">Cargando...</div>
+          <h3>Toneladas de Basura</h3>
+          <p class="stat-sub">Generadas a nivel mundial</p>
+        </div>
+        <div class="progress-line green-line"></div>
+      </div>
+
+      <div class="stat-card animal-card">
+        <div class="icon-wrapper">🐢</div>
+        <div class="stat-content">
+          <div class="number-display" id="animales">Cargando...</div>
+          <h3>Animales Afectados</h3>
+          <p class="stat-sub">Por plásticos en los océanos</p>
+        </div>
+        <div class="progress-line blue-line"></div>
+      </div>
+
+      <div class="stat-card co2-card">
+        <div class="icon-wrapper">🏭</div>
+        <div class="stat-content">
+          <div class="number-display" id="co2">Cargando...</div>
+          <h3>Emisiones de CO₂ (kg)</h3>
+          <p class="stat-sub">Por quema de residuos</p>
+        </div>
+        <div class="progress-line red-line"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-section contact">
+      <h3>Contacto</h3>
+      <p><strong>Email:</strong> contacto@ecoresi.com</p>
+      <p><strong>Teléfono:</strong> +54 362 123 4567</p>
+      <p><strong>Dirección:</strong> Resistencia, Chaco, Argentina</p>
+    </div>
+
+    <div class="footer-section social">
+      <h3>Redes Sociales</h3>
+      <div class="social-icons">
+        <a href="#" target="_blank">Facebook</a>
+        <a href="#" target="_blank">Instagram</a>
+        <a href="#" target="_blank">Twitter</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 <a href="informacion.html" class="copyright-link">EcoResi</a> - Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<div id="modalHorarios" class="modal-overlay" style="display: none;">
+  <div class="modern-modal">
+    <button class="close-modal-btn">&times;</button>
+    
+    <div class="modal-header">
+      <div class="icon-header">🚛</div>
+      <h2>Cronograma de Recolección</h2>
+    </div>
+
+    <div class="geo-section">
+      <p class="geo-helper-text">
+        Al usar tu ubicación, detectaremos automáticamente qué camión pasa por tu domicilio y en qué horarios.
+      </p>
+      
+      <button id="btnGeoMain" class="btn-geo-primary">
+        <span class="geo-icon">📍</span>
+        <span class="geo-btn-text">Usar mi ubicación actual</span>
+      </button>
+    </div>
+
+    <div class="modal-divider"><span>O busca manualmente</span></div>
+
+    <div class="manual-section">
+      <div class="input-label-wrapper">
+        <label>Ingresa tu zona</label>
+        <div class="tooltip-container">
+          <span class="exclamation-icon">!</span>
+          <div class="tooltip-content">
+            <p><strong>Consejos de búsqueda:</strong></p>
+            <ul style="padding-left: 15px; margin: 5px 0; font-size: 0.85rem;">
+              <li>Escribí el nombre del barrio (ej: "San Martín").</li>
+              <li>O el nombre de la calle principal (ej: "Av. 9 de Julio").</li>
+              <li>No hace falta poner el número de casa.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-bar-wrapper">
+        <input id="inputManual" type="text" class="modern-input" placeholder="Ej: Barrio Centro...">
+        <button id="btnManualSearch" class="btn-icon-search">🔍</button>
+      </div>
+    </div>
+
+    <div id="ticketResult" class="ticket-container" style="display: none;">
+      </div>
+
+  </div>
+</div>
+
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  
+  <script src="js/script.js"></script>
+
+</body>
+</html>
