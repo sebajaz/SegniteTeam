@@ -225,13 +225,13 @@ class AdminPanel {
                         <div class="flex items-center gap-3">
                             ${Icons.recycle('icon-lg')}
                             <div>
-                                <h1>Panel de AdministraciÃ³n - EcoResi</h1>
-                                <p>GestiÃ³n de reportes ambientales</p>
+                                <h1>Panel de Administración - EcoResi</h1>
+                                <p>Gestión de reportes ambientales</p>
                             </div>
                         </div>
                         <button class="btn btn-outline" id="logoutBtn">
                             ${Icons.logOut('icon-sm')}
-                            <span>Cerrar SesiÃ³n</span>
+                            <span>Cerrar Sesión</span>
                         </button>
                     </div>
                 </div>
